@@ -1,0 +1,174 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  color-scheme: light;
+}
+
+body {
+  @apply min-h-screen bg-sand font-body text-ink antialiased;
+}
+
+h1,
+h2,
+h3,
+h4 {
+  @apply font-heading tracking-tight;
+}
+
+.prose-content p {
+  @apply leading-relaxed;
+}
+
+.prose-content p + p {
+  @apply mt-4;
+}
+
+a {
+  @apply transition-colors duration-200;
+}
+
+.shadow-soft {
+  box-shadow: 0 20px 50px rgba(31, 27, 22, 0.08);
+}
+
+@layer components {
+  .markdown-content {
+    @apply space-y-3 text-sm leading-relaxed text-ink/80;
+  }
+
+  .markdown-content h1,
+  .markdown-content h2,
+  .markdown-content h3,
+  .markdown-content h4 {
+    @apply font-heading text-ink;
+  }
+
+  .markdown-content p {
+    @apply leading-relaxed text-ink/80;
+  }
+
+  .markdown-content ul {
+    @apply list-disc pl-6;
+  }
+
+  .markdown-content ol {
+    @apply list-decimal pl-6;
+  }
+
+  .markdown-content a {
+    @apply text-ink underline underline-offset-4;
+  }
+
+  .markdown-content strong {
+    @apply text-ink font-semibold;
+  }
+
+  .markdown-content code {
+    @apply rounded bg-sand px-1 py-0.5 text-[0.85em] text-ink;
+  }
+
+  .markdown-content blockquote {
+    @apply border-l-4 border-blush/50 bg-sand/70 py-2 pl-4 text-ink/80;
+  }
+}
+
+.markdown-preview {
+  position: relative;
+  max-height: 16rem;
+  overflow: hidden;
+}
+
+.markdown-preview::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 4rem;
+  background: linear-gradient(180deg, rgba(252, 249, 234, 0), rgba(252, 249, 234, 0.95));
+  pointer-events: none;
+}
+
+.interactive-panel {
+  position: relative;
+  overflow: hidden;
+  transition: transform 300ms ease, box-shadow 300ms ease;
+}
+
+.interactive-panel::before,
+.interactive-panel::after {
+  content: "";
+  position: absolute;
+  inset: -20%;
+  background: radial-gradient(circle at 30% 30%, rgba(255, 164, 164, 0.15), transparent 40%),
+    radial-gradient(circle at 80% 20%, rgba(186, 223, 219, 0.12), transparent 45%),
+    radial-gradient(circle at 60% 80%, rgba(255, 189, 189, 0.1), transparent 40%);
+  opacity: 0;
+  transition: opacity 400ms ease, transform 400ms ease;
+  z-index: 0;
+}
+
+.interactive-panel:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 30px 60px rgba(31, 27, 22, 0.12);
+}
+
+.interactive-panel:hover::before,
+.interactive-panel:hover::after {
+  opacity: 1;
+  transform: scale(1.03);
+}
+
+@keyframes reveal-left {
+  0% {
+    opacity: 0;
+    transform: translateX(-24px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes reveal-right {
+  0% {
+    opacity: 0;
+    transform: translateX(24px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes layer-reveal {
+  0% {
+    opacity: 0;
+    transform: translateY(20px) scale(0.98);
+    box-shadow: 0 20px 50px rgba(31, 27, 22, 0.0);
+  }
+  60% {
+    opacity: 1;
+    transform: translateY(-6px) scale(1.01);
+    box-shadow: 0 20px 50px rgba(31, 27, 22, 0.08);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+    box-shadow: 0 20px 50px rgba(31, 27, 22, 0.08);
+  }
+}
+
+.animate-reveal-left {
+  animation: reveal-left 900ms ease forwards;
+}
+
+.animate-reveal-right {
+  animation: reveal-right 950ms ease forwards;
+}
+
+.animate-layer-reveal {
+  animation: layer-reveal 950ms ease forwards;
+}

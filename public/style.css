@@ -1,0 +1,135 @@
+:root{
+      /* Palette */
+      --bg: #FDF5E3;        /* warm cream */
+      --text: #132863;      /* dark navy */
+      --muted: #4D5B82;     /* muted navy */
+      --accent: #F5C1C3;    /* dusty pink */
+      --accent-soft:#E4D6D0;/* pale pink */
+      --card: rgba(255,255,255,0.60);
+
+      --radius: 20px; --shadow: 0 12px 28px rgba(19,40,99,0.10); --maxw: 980px;
+      --easing: cubic-bezier(.22,.61,.36,1);
+    }
+
+    html,body{height:100%}
+    body{ margin:0; background:var(--bg); color:var(--text);
+      font-family: Inter, system-ui, -apple-system, Segoe UI, Roboto, "Helvetica Neue", Arial;
+      line-height:1.6; -webkit-font-smoothing: antialiased; text-rendering: optimizeLegibility; }
+    *{box-sizing:border-box}
+
+    .backdrop{ position:fixed; inset:0; z-index:-1;
+      background:
+        radial-gradient(1000px 600px at 85% -10%, rgba(245,193,195,.25), transparent 60%),
+        radial-gradient(900px 520px at -10% 95%, rgba(228,214,208,.22), transparent 60%),
+        linear-gradient(#FCF7EB, #F8F0E4);
+      filter:saturate(1.02);
+    }
+
+    .site{max-width:var(--maxw); margin:0 auto; padding:28px 18px 80px}
+
+    header{display:flex; align-items:center; justify-content:space-between; gap:16px; margin-bottom:10px}
+    .brand{display:flex; align-items:center; gap:12px; text-decoration:none; color:inherit}
+    .avatar{width:34px; height:34px; border-radius:999px; overflow:hidden; background:var(--accent-soft); cursor:pointer; display:inline-flex}
+    .avatar img, .avatar-lg img{ width:100%; height:100%; object-fit: cover; display:block; border-radius:inherit }
+    .brand-name{font-weight:700}
+    nav{display:flex; gap:18px; font-weight:600}
+    .nav-link{ position:relative; text-decoration:none; color:var(--text); opacity:.92; padding:6px 4px; border-radius:10px; }
+    .nav-link .num{opacity:.65; margin-right:6px}
+    .nav-link.is-active:after, .nav-link:hover:after{
+      content:""; position:absolute; left:.4rem; right:.4rem; bottom:2px; height:5px; background:var(--accent); border-radius:6px; z-index:-1;
+    }
+
+    .card{ background:var(--card); backdrop-filter: blur(6px); border-radius:var(--radius); box-shadow:var(--shadow); border: 1px solid rgba(19,40,99,0.06); }
+
+    .hero{ padding:44px; display:grid; gap:16px }
+    h1{ font-family:"Playfair Display", ui-serif, Georgia, serif; font-size: clamp(2.1rem, 6vw, 3.6rem); line-height:1.12; margin:0 0 6px; letter-spacing:.2px; }
+    .hello{ color:#c04f74; letter-spacing:.6px; font-weight:800; font-size:.95rem; }
+    .lead{ color:var(--muted); font-size: clamp(1rem, 2.2vw, 1.12rem); margin:0 }
+    .soft-underline{ position:relative; display:inline-block }
+    .soft-underline:after{ content:""; position:absolute; left:4px; right:4px; bottom:-6px; height:12px; background: linear-gradient(90deg, var(--accent), var(--accent-soft)); opacity:.55; border-radius:10px; z-index:-1; }
+
+    .section{ padding:26px 44px 36px; display:grid; gap:14px}
+    h2{ margin:0; font-size: clamp(1.15rem, 3vw, 1.5rem); letter-spacing:.3px }
+    .text{ color:var(--muted) }
+    .text a{ color:var(--text); text-decoration:none; background: linear-gradient(transparent 70%, rgba(245,193,195,.5) 0) no-repeat; transition: background-size .25s ease; }
+    .text a:hover{ background-size:100% 100% }
+
+    /* Writing list */
+    .list{ display:grid; gap:12px; }
+    .post{ padding:14px 16px; border-radius:16px; background: rgba(255,255,255,.75); border:1px solid rgba(19,40,99,.06); display:grid; gap:6px }
+    .post h3{ margin:0; font-size:1.05rem }
+    .meta{ color:var(--muted); font-size:.9rem }
+    .post-actions{ display:flex; gap:8px; margin-top:6px; flex-wrap:wrap }
+
+    /* Buttons */
+    .compose, .mini-btn{ display:inline-flex; align-items:center; gap:10px; padding:.7rem 1rem; border-radius:12px; font-weight:700; cursor:pointer; border:1px solid rgba(19,40,99,.12); }
+    .mini-btn{ background:#fff; color:var(--text) }
+    .mini-btn.primary{ background: var(--accent); color:#fff; border-color: transparent }
+
+    /* Compose button (side) */
+    .compose{ position:fixed; right:22px; bottom:24px; z-index:50; background: var(--accent); color:#fff; border-radius:999px; box-shadow: 0 10px 22px rgba(245,193,195,.45); transform: translateY(0); transition: transform .2s var(--easing), box-shadow .2s var(--easing); }
+    .compose:hover{ transform: translateY(-2px); box-shadow: 0 16px 28px rgba(245,193,195,.55); }
+    @media (min-width: 980px){ .compose{ top: 50%; bottom:auto; transform: translateY(-50%); } .compose:hover{ transform: translateY(calc(-50% - 2px)); } }
+
+    /* Drawer (shared) */
+    .drawer{ position:fixed; inset:0; display:none; background: rgba(0,0,0,.12); }
+    .drawer.open{ display:block; }
+    .drawer-panel{ position:absolute; top:0; right:0; width:min(520px, 92vw); height:100%; background: #fff; box-shadow: -12px 0 30px rgba(19,40,99,.18); padding:18px; display:grid; grid-template-rows:auto 1fr auto; gap:12px; }
+
+    .field{ display:grid; gap:6px }
+    .input, .area{ width:100%; padding:.7rem .8rem; border:1px solid rgba(19,40,99,.18); border-radius:12px; font: inherit; }
+    .area{ min-height: 180px; resize: vertical }
+    .btn{ display:inline-flex; align-items:center; gap:8px; padding:.7rem 1rem; border-radius:12px; font-weight:700; cursor:pointer; border:1px solid rgba(19,40,99,.12); background:#fff; color:var(--text) }
+    .btn.primary{ background: var(--accent); border-color: transparent; color:#fff }
+
+    /* Reader overlay */
+    .overlay{ position:fixed; inset:0; display:none; background: rgba(0,0,0,.12); }
+    .overlay.open{ display:block }
+    .reader{ position:absolute; inset:6% 6% auto 6%; height:88%; background:#fff; border-radius:20px; box-shadow: 0 18px 40px rgba(19,40,99,.20); display:grid; grid-template-rows:auto 1fr; overflow:hidden }
+    .reader header{ padding:16px 18px; border-bottom:1px solid rgba(19,40,99,.08) }
+    .reader main{ padding:16px 18px; overflow:auto }
+
+    footer{padding:22px; text-align:center; color:var(--muted); font-size:.95rem}
+
+    /* Reveal */
+    .reveal{ opacity:1; transform:none }
+    .fonts-ready .reveal{ animation: fadeUp .8s var(--easing) both; animation-delay: var(--delay, 0ms) }
+    @keyframes fadeUp{ from{ opacity:0; transform: translateY(10px) } to{ opacity:1; transform: translateY(0) } }
+    @media (prefers-reduced-motion: reduce){ .reveal{ opacity:1 !important; transform:none !important; animation:none !important } }
+
+    /* Views */
+    .view{ display:none }
+    .view.active{ display:block }
+
+    /* ABOUT specific */
+    .profile{ display:flex; align-items:center; gap:18px; flex-wrap:wrap }
+    .avatar-lg{ width:128px; height:128px; border-radius:999px; background: radial-gradient(60% 70% at 30% 30%, var(--accent), var(--accent-soft)); box-shadow: var(--shadow); border: 2px solid rgba(19,40,99,.08); overflow:hidden }
+    .name{ font-family:"Playfair Display", ui-serif, Georgia, serif; font-size: clamp(1.8rem, 5vw, 2.6rem); margin:0 }
+    .timeline{ list-style:none; margin:0; padding-left:0; }
+    .timeline li{ position:relative; padding:10px 0 10px 26px; border-left:2px solid var(--accent); }
+    .timeline li::before{ content:""; position:absolute; left:-7px; top:16px; width:12px; height:12px; border-radius:50%; background:var(--accent); box-shadow:0 0 0 4px rgba(245,193,195,.25) }
+    .about-actions{ display:flex; gap:10px; flex-wrap:wrap; margin-top:10px }
+
+/* === Custom overrides (requested) === */
+
+/* 1) Remove pink soft underline under "22" on Home */
+.soft-underline:after {
+  display: none !important;
+  content: none !important;
+}
+
+/* 2) Make Writing list action buttons (Open/Edit/Delete) half the height */
+.mini-btn {
+  padding: 0.35rem 0.8rem; /* reduced height */
+}
+
+/* 3) In Compose drawer, change Save button color on hover */
+#save:hover {
+  background: #FF5151;
+  border-color: #FF5151;
+  color: #fff;
+}
+
+/* 管理员控件：默认隐藏，管理员显示 */
+.admin-only { display: none !important; }
+.is-admin .admin-only { display: inline-flex !important; }
