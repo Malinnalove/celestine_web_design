@@ -41,7 +41,7 @@ export default async function AdminPage() {
           <EditModeLogin action={enableEditMode} />
         )}
 
-        <AdminNotes initial={content.adminNotes} onSave={updateAdminNotesAction} />
+        <AdminNotes initial={content.adminNotes} onSave={updateAdminNotesAction} isEditMode={isEditMode} />
       </div>
     </section>
   );

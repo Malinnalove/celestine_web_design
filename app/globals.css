@@ -172,3 +172,22 @@ a {
 .animate-layer-reveal {
   animation: layer-reveal 950ms ease forwards;
 }
+
+.scroll-reveal {
+  opacity: 0;
+  transform: translateY(10px);
+  transition: opacity 0.6s ease, transform 0.8s ease;
+}
+
+.scroll-reveal-left {
+  transform: translateX(-18px);
+}
+
+.scroll-reveal-right {
+  transform: translateX(18px);
+}
+
+.scroll-reveal.in-view {
+  opacity: 1;
+  transform: translateX(0) translateY(0);
+}

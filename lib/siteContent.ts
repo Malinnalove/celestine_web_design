@@ -35,8 +35,8 @@ export type SiteContent = {
 const DEFAULT_CONTENT: SiteContent = {
   heroEyebrow: "Editorial dispatch",
   heroTitle: "Everyday field notes & gallery fragments",
-  navEyebrow: "Journal of",
-  navTitle: "Studio Notes",
+  navEyebrow: "Journey of",
+  navTitle: "Zlin",
   avatarUrl:
     "https://images.unsplash.com/photo-1504593811423-6dd665756598?auto=format&fit=crop&w=400&q=80",
   avatarPosition: "center",
@@ -173,8 +173,9 @@ export async function getSiteContent(): Promise<SiteContent> {
   }
 
   return {
-    navEyebrow: navEyebrow ?? DEFAULT_CONTENT.navEyebrow,
-    navTitle: navTitle ?? DEFAULT_CONTENT.navTitle,
+    navEyebrow:
+      navEyebrow && navEyebrow !== "Journal of" ? navEyebrow : DEFAULT_CONTENT.navEyebrow,
+    navTitle: navTitle && navTitle !== "Studio Notes" ? navTitle : DEFAULT_CONTENT.navTitle,
     heroEyebrow: heroEyebrow ?? DEFAULT_CONTENT.heroEyebrow,
     heroTitle: heroTitle ?? DEFAULT_CONTENT.heroTitle,
     avatarUrl: avatarUrl ?? DEFAULT_CONTENT.avatarUrl,

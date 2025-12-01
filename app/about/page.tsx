@@ -13,6 +13,7 @@ import { getSiteContent } from "@/lib/siteContent";
 import { cookies } from "next/headers";
 import ContactLinksEditor from "@/components/ContactLinksEditor";
 import { AddMilestoneButton, DeleteMilestoneButton } from "@/components/MilestoneControls";
+import ScrollReveal from "@/components/ScrollReveal";
 
 export default async function AboutPage() {
   const cookieStore = cookies();
@@ -70,10 +71,7 @@ export default async function AboutPage() {
                 <div
                   className="relative space-y-4 pl-6 lg:grid lg:grid-cols-[200px,1fr] lg:items-start lg:gap-8 lg:space-y-0 lg:pl-0"
                 >
-                  <div
-                    className="flex justify-start lg:justify-end animate-reveal-left"
-                    style={{ animationDelay: `${index * 120}ms` }}
-                  >
+                  <ScrollReveal direction="left" className="flex justify-start lg:justify-end">
                     <EditableText
                       value={milestone.year}
                       isEditMode={isEditMode}
@@ -81,31 +79,30 @@ export default async function AboutPage() {
                       className="text-xl font-heading text-ink text-left lg:text-right w-full"
                       label="Year"
                     />
-                  </div>
-                  <div
-                    className="relative rounded-3xl border border-ink/10 bg-white/80 p-6 shadow-soft animate-reveal-right"
-                    style={{ animationDelay: `${index * 120 + 80}ms` }}
-                  >
-                    <span
-                      className="absolute left-0 top-8 inline-flex h-4 w-4 -translate-x-1/2 items-center justify-center rounded-full bg-blush shadow-soft lg:-left-[14px]"
-                      aria-hidden="true"
-                    >
-                      <span className="h-2 w-2 rounded-full bg-white" />
-                    </span>
-                    <EditableText
-                      value={milestone.description}
-                      isEditMode={isEditMode}
-                      onSave={saveMilestoneDescription.bind(null, milestone.id)}
-                      multiline
-                      className="text-sm leading-relaxed text-ink/80"
-                      label="Description"
-                    />
-                    {isEditMode && (
-                      <div className="mt-3 flex justify-end">
-                        <DeleteMilestoneButton milestoneId={milestone.id} />
-                      </div>
-                    )}
-                  </div>
+                  </ScrollReveal>
+                  <ScrollReveal direction="right">
+                    <div className="relative rounded-3xl border border-ink/10 bg-white/80 p-6 shadow-soft">
+                      <span
+                        className="absolute left-0 top-8 inline-flex h-4 w-4 -translate-x-1/2 items-center justify-center rounded-full bg-blush shadow-soft lg:-left-[14px]"
+                        aria-hidden="true"
+                      >
+                        <span className="h-2 w-2 rounded-full bg-white" />
+                      </span>
+                      <EditableText
+                        value={milestone.description}
+                        isEditMode={isEditMode}
+                        onSave={saveMilestoneDescription.bind(null, milestone.id)}
+                        multiline
+                        className="text-sm leading-relaxed text-ink/80"
+                        label="Description"
+                      />
+                      {isEditMode && (
+                        <div className="mt-3 flex justify-end">
+                          <DeleteMilestoneButton milestoneId={milestone.id} />
+                        </div>
+                      )}
+                    </div>
+                  </ScrollReveal>
                 </div>
                 {isEditMode && (
                   <div className="pl-6 lg:pl-0">

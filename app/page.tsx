@@ -7,6 +7,8 @@ import { markdownToPlainText } from "@/lib/markdown";
 import { cookies } from "next/headers";
 import Link from "next/link";
 
+export const dynamic = "force-dynamic";
+
 export default async function HomePage() {
   const cookieStore = cookies();
   const isEditMode = cookieStore.get("edit-mode")?.value === "true";

@@ -58,28 +58,30 @@ export default function DiaryTimeline({ entries, isEditMode }: DiaryTimelineProp
 
             <div className="rounded-3xl border border-ink/10 bg-white/80 p-6 shadow-soft">
               <div className="flex flex-col gap-3">
-                <div>
-                  <p className="text-xs uppercase tracking-[0.4em] text-ink/50">
-                    {entry.month} {entry.year}
-                  </p>
-                  <h3 className="font-heading text-2xl text-ink">{entry.title}</h3>
-                </div>
-                <div className="flex flex-wrap items-center justify-center gap-3 text-xs uppercase tracking-[0.3em]">
-                  <Link
-                    href={entry.link}
-                    className="rounded-full border border-ink/20 px-3 py-1 font-semibold text-ink transition hover:border-ink hover:bg-ink hover:text-sand"
-                  >
-                    Read entry
-                  </Link>
-                  {isEditMode && (
-                    <button
-                      type="button"
-                      onClick={() => setEditingId(editingId === entry.id ? null : entry.id)}
-                      className="rounded-full border border-ink/20 px-3 py-1 font-semibold text-ink transition hover:border-ink hover:bg-ink hover:text-sand"
+                <div className="flex flex-wrap items-start justify-between gap-3">
+                  <div>
+                    <p className="text-xs uppercase tracking-[0.4em] text-ink/50">
+                      {entry.month} {entry.year}
+                    </p>
+                    <h3 className="font-heading text-2xl text-ink">{entry.title}</h3>
+                  </div>
+                  <div className="flex items-center gap-2 text-xs font-semibold uppercase tracking-[0.3em]">
+                    <Link
+                      href={entry.link}
+                      className="rounded-full border border-ink/20 px-3 py-1 text-[11px] transition hover:border-ink hover:bg-ink hover:text-sand"
                     >
-                      {editingId === entry.id ? "Done" : "Edit"}
-                    </button>
-                  )}
+                      Read entry
+                    </Link>
+                    {isEditMode && (
+                      <button
+                        type="button"
+                        onClick={() => setEditingId(editingId === entry.id ? null : entry.id)}
+                        className="rounded-full border border-ink/20 px-3 py-1 text-[11px] transition hover:border-ink hover:bg-ink hover:text-sand"
+                      >
+                        {editingId === entry.id ? "Done" : "Edit"}
+                      </button>
+                    )}
+                  </div>
                 </div>
               </div>
 
