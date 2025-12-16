@@ -14,15 +14,17 @@ import { cookies } from "next/headers";
 import ContactLinksEditor from "@/components/ContactLinksEditor";
 import { AddMilestoneButton, DeleteMilestoneButton } from "@/components/MilestoneControls";
 import ScrollReveal from "@/components/ScrollReveal";
+import PlayfulHeading from "@/components/PlayfulHeading";
 
 export default async function AboutPage() {
   const cookieStore = cookies();
   const isEditMode = cookieStore.get("edit-mode")?.value === "true";
+  const theme = cookieStore.get("theme")?.value === "beast" ? "beast" : "classic";
   const content = await getSiteContent();
 
   return (
     <section className="space-y-12">
-      <div className="grid gap-10 md:grid-cols-[auto,1fr]">
+      <div className="flex flex-col items-center gap-8 text-center">
         <div>
           <AvatarPreviewer src={content.avatarUrl} position={content.avatarPosition} className="shadow-soft" />
           {isEditMode && (
@@ -34,17 +36,23 @@ export default async function AboutPage() {
             />
           )}
         </div>
-        <div className="space-y-4">
-          <p className="text-xs uppercase tracking-[0.4em] text-ink/60">About</p>
-          <h1 className="font-heading text-4xl text-ink">
-            A slow-crafted studio practice
-          </h1>
+        <div className="space-y-4 max-w-3xl">
+          {theme === "beast" ? (
+            <PlayfulHeading
+              text="A slow-crafted studio practice"
+              className="font-heading text-6xl font-black text-ink leading-tight"
+            />
+          ) : (
+            <h1 className="font-heading text-6xl font-semibold text-ink leading-tight">
+              A slow-crafted studio practice
+            </h1>
+          )}
           <EditableText
             value={content.aboutBio}
             isEditMode={isEditMode}
             onSave={saveAboutBio}
             multiline
-            className="text-base leading-relaxed text-ink/80"
+            className="text-lg leading-relaxed text-ink/80"
             label="Short bio"
           />
         </div>
@@ -69,9 +77,9 @@ export default async function AboutPage() {
             {content.milestones.map((milestone, index) => (
               <div key={milestone.id} className="space-y-3">
                 <div
-                  className="relative space-y-4 pl-6 lg:grid lg:grid-cols-[200px,1fr] lg:items-start lg:gap-8 lg:space-y-0 lg:pl-0"
+                  className="relative space-y-4 pl-6 lg:grid lg:grid-cols-[200px,1fr] lg:items-center lg:gap-8 lg:space-y-0 lg:pl-0"
                 >
-                  <ScrollReveal direction="left" className="flex justify-start lg:justify-end">
+                  <ScrollReveal direction="left" className="flex justify-start lg:justify-end pr-6 lg:pr-10">
                     <EditableText
                       value={milestone.year}
                       isEditMode={isEditMode}

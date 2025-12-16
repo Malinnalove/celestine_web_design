@@ -19,6 +19,7 @@ type GalleryGridProps = {
 
 export default function GalleryGrid({ items, isEditMode }: GalleryGridProps) {
   const [preview, setPreview] = useState<GalleryItem | null>(null);
+  const [ratios, setRatios] = useState<Record<string, number>>({});
 
   return (
     <>
@@ -26,7 +27,7 @@ export default function GalleryGrid({ items, isEditMode }: GalleryGridProps) {
         {items.map((item) => (
           <figure
             key={`${item.id}-${item.image}`}
-            className="group relative aspect-[3/4] overflow-hidden rounded-3xl border border-ink/10 bg-sand/80 shadow-soft"
+            className="group relative aspect-[3/4] overflow-hidden rounded-3xl border border-ink/10 shadow-soft"
           >
             <button
               type="button"
@@ -64,19 +65,7 @@ export default function GalleryGrid({ items, isEditMode }: GalleryGridProps) {
                 Close
               </button>
             </div>
-            <div className="relative h-[80vh] overflow-hidden rounded-[48px] bg-white shadow-2xl">
-              <Image
-                src={formatImageSrc(preview.image, "?auto=format&fit=crop&w=1600&q=90")}
-                alt={preview.title}
-                fill
-                sizes="(max-width: 640px) 90vw, (max-width: 1280px) 75vw, 60vw"
-                className="object-contain"
-              />
-              <div className="pointer-events-none absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/80 to-transparent px-10 py-8 text-white">
-                <p className="text-sm uppercase tracking-[0.4em] text-petal">{preview.id}</p>
-                <p className="font-heading text-3xl">{preview.title}</p>
-              </div>
-            </div>
+            <Lightbox items={items} preview={preview} setPreview={setPreview} />
           </div>
         </div>
       )}
@@ -88,6 +77,51 @@ type GalleryTileEditorProps = {
   initialValue: string;
   onUpdate: (value: string) => Promise<ActionState>;
 };
+
+type LightboxProps = {
+  items: GalleryItem[];
+  preview: GalleryItem;
+  setPreview: (item: GalleryItem | null) => void;
+};
+
+function Lightbox({ items, preview, setPreview }: LightboxProps) {
+  const currentIndex = items.findIndex((i) => i.id === preview.id && i.image === preview.image);
+  const prevIndex = (currentIndex - 1 + items.length) % items.length;
+  const nextIndex = (currentIndex + 1) % items.length;
+
+  const showItem = (idx: number) => {
+    const item = items[idx];
+    setPreview(item);
+  };
+
+  return (
+    <div className="relative h-[80vh] overflow-hidden rounded-[16px]">
+      <Image
+        src={formatImageSrc(preview.image, "?auto=format&fit=crop&w=1600&q=90")}
+        alt={preview.title}
+        fill
+        sizes="(max-width: 640px) 90vw, (max-width: 1280px) 75vw, 60vw"
+        className="object-contain rounded-[12px]"
+      />
+      <button
+        type="button"
+        className="absolute inset-y-0 left-0 z-10 w-1/5 bg-transparent text-transparent"
+        onClick={() => showItem(prevIndex)}
+        aria-label="Previous image"
+      >
+        <span className="sr-only">Previous</span>
+      </button>
+      <button
+        type="button"
+        className="absolute inset-y-0 right-0 z-10 w-1/5 bg-transparent text-transparent"
+        onClick={() => showItem(nextIndex)}
+        aria-label="Next image"
+      >
+        <span className="sr-only">Next</span>
+      </button>
+    </div>
+  );
+}
 
 function GalleryTileEditor({ initialValue, onUpdate }: GalleryTileEditorProps) {
   const [value, setValue] = useState(initialValue);

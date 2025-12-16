@@ -32,7 +32,7 @@ export default function NavMenu({
   const normalizedPath = pathname === "/photos" ? "/gallery" : pathname;
 
   return (
-    <div className="flex flex-col gap-6 border-b border-[#f2decf] pb-6 md:flex-row md:items-center md:justify-between">
+    <div className="flex w-full flex-col gap-6 border-b border-[#f2decf] pb-6 md:flex-row md:items-center md:justify-between md:pl-6">
       <Link href="/about" className="flex items-center gap-4">
         <Avatar
           src={avatarUrl}
@@ -46,7 +46,7 @@ export default function NavMenu({
         </div>
       </Link>
 
-      <div className="flex flex-wrap items-center gap-5 text-xs font-semibold tracking-[0.3em] text-ink/70">
+      <div className="flex flex-wrap items-center gap-5 text-xs font-semibold tracking-[0.3em] text-ink/70 md:ml-auto md:justify-end md:self-end">
         {navItems.map((item) => {
           const isActive =
             item.href === "/"

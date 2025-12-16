@@ -18,6 +18,13 @@ export type Comment = {
   createdAt: string;
 };
 
+export type MoodEntry = {
+  date: string; // yyyy-mm-dd
+  mood: "joy" | "anger" | "calm" | "fatigue" | "sadness";
+  intensity: 1 | 2 | 3;
+  note?: string;
+};
+
 type PostRow = {
   id: string;
   title: string;
@@ -25,6 +32,19 @@ type PostRow = {
   content: string;
   created_at: string;
 };
+
+let moodTableReady: Promise<void> | null = null;
+
+async function ensureMoodTable() {
+  if (!moodTableReady) {
+    moodTableReady = (async () => {
+      await client.execute(
+        "create table if not exists mood_entries (id text primary key, date text unique, mood text, intensity integer, note text default '', created_at text default (datetime('now')))",
+      );
+    })();
+  }
+  return moodTableReady;
+}
 
 const mapPost = (row: PostRow, images: string[]): Post => ({
   id: row.id,
@@ -189,4 +209,28 @@ export async function updatePostById(
 export async function updatePostImages(postId: string, images: string[]): Promise<Post | null> {
   await replaceImages(postId, images);
   return getPostById(postId);
+}
+
+export async function getMoodEntries(): Promise<MoodEntry[]> {
+  await ensureMoodTable();
+  const { rows } = await client.execute(
+    "select date, mood, intensity, note from mood_entries order by date desc",
+  );
+  return (rows as unknown as { date: string; mood: MoodEntry["mood"]; intensity: number; note: string }[]).map(
+    (row) => ({
+      date: row.date,
+      mood: row.mood,
+      intensity: Math.min(3, Math.max(1, Number(row.intensity))) as 1 | 2 | 3,
+      note: row.note ?? "",
+    }),
+  );
+}
+
+export async function upsertMoodEntry(entry: MoodEntry) {
+  await ensureMoodTable();
+  await client.execute({
+    sql: "insert into mood_entries (id, date, mood, intensity, note, created_at) values (?, ?, ?, ?, ?, datetime('now')) on conflict(date) do update set mood=excluded.mood, intensity=excluded.intensity, note=excluded.note",
+    args: [entry.date, entry.date, entry.mood, entry.intensity, entry.note ?? ""],
+  });
+  return entry;
 }

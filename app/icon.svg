@@ -1,0 +1,56 @@
+<svg width="256" height="256" viewBox="0 0 256 256" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <radialGradient id="bgSoft" cx="30%" cy="20%" r="80%">
+      <stop offset="0%" stop-color="#FFF7ED" />
+      <stop offset="100%" stop-color="#FED7AA" />
+    </radialGradient>
+
+    <linearGradient id="zStroke" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#FDBA74" />
+      <stop offset="50%" stop-color="#FB923C" />
+      <stop offset="100%" stop-color="#F97316" />
+    </linearGradient>
+
+    <filter id="glow" x="-30%" y="-30%" width="160%" height="160%">
+      <feGaussianBlur in="SourceGraphic" stdDeviation="4" result="blur" />
+      <feColorMatrix
+        in="blur"
+        type="matrix"
+        values="1 0 0 0 0
+                0 1 0 0 0
+                0 0 1 0 0
+                0 0 0 0.6 0"
+        result="softGlow" />
+      <feMerge>
+        <feMergeNode in="softGlow" />
+        <feMergeNode in="SourceGraphic" />
+      </feMerge>
+    </filter>
+  </defs>
+
+  <circle cx="128" cy="128" r="112" fill="url(#bgSoft)" />
+
+  <path
+    d="M 64 82
+       Q 128 40 192 82
+       Q 148 112 122 136
+       Q 96 160 72 188
+       Q 128 216 192 188"
+    fill="none"
+    stroke="url(#zStroke)"
+    stroke-width="18"
+    stroke-linecap="round"
+    stroke-linejoin="round"
+    filter="url(#glow)"
+  />
+
+  <circle
+    cx="128"
+    cy="128"
+    r="108"
+    fill="none"
+    stroke="#FFFFFF"
+    stroke-opacity="0.45"
+    stroke-width="2"
+  />
+</svg>

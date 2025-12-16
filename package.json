@@ -9,9 +9,11 @@
     "lint": "next lint"
   },
   "dependencies": {
-    "@libsql/client": "^0.15.15",
     "@aws-sdk/client-s3": "^3.670.0",
+    "@libsql/client": "^0.15.15",
+    "framer-motion": "^12.23.25",
     "next": "14.2.33",
+    "ogl": "^1.0.3",
     "react": "18.2.0",
     "react-dom": "18.2.0",
     "react-markdown": "^10.1.0",

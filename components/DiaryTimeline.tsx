@@ -37,28 +37,27 @@ export default function DiaryTimeline({ entries, isEditMode }: DiaryTimelineProp
   }
 
   return (
-    <div className="relative space-y-8">
+    <div className="relative space-y-8 diary-wrapper">
       <div
-        className="pointer-events-none absolute left-4 top-0 hidden h-full w-[2px] bg-ink/10 md:block"
+        className="pointer-events-none absolute left-4 top-0 hidden h-full border-l border-ink/10 md:block diary-line"
         aria-hidden="true"
       />
-      <div className="flex flex-col gap-6">
+      <div className="flex flex-col gap-6 diary-stack">
         {entries.map((entry, index) => (
           <article
             key={entry.id}
-            className="relative pl-6 md:pl-12 animate-layer-reveal"
+            className="relative pl-6 md:pl-12 animate-layer-reveal bg-transparent diary-card"
             style={{ animationDelay: `${index * 120}ms` }}
           >
             <span
-              className="absolute left-2 top-10 inline-flex h-4 w-4 -translate-x-1/2 items-center justify-center rounded-full bg-blush shadow-soft md:left-4"
+              className="diary-marker absolute left-2 md:left-4 top-1/2 inline-flex h-4 w-4 -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-full bg-blush shadow-soft"
               aria-hidden="true"
             >
               <span className="h-2 w-2 rounded-full bg-white" />
             </span>
-
-            <div className="rounded-3xl border border-ink/10 bg-white/80 p-6 shadow-soft">
+            <div className="rounded-3xl border border-ink/10 p-6 shadow-none diary-card-inner">
               <div className="flex flex-col gap-3">
-                <div className="flex flex-wrap items-start justify-between gap-3">
+                <div className="flex flex-wrap items-center justify-between gap-3 diary-card-header">
                   <div>
                     <p className="text-xs uppercase tracking-[0.4em] text-ink/50">
                       {entry.month} {entry.year}
@@ -86,7 +85,7 @@ export default function DiaryTimeline({ entries, isEditMode }: DiaryTimelineProp
               </div>
 
               {(entry.cover || (isEditMode && editingId === entry.id)) && (
-                <div className="mt-4">
+                <div className="mt-4 diary-details">
                   <EditableImage
                     value={entry.cover}
                     isEditMode={isEditMode && editingId === entry.id}
@@ -97,18 +96,12 @@ export default function DiaryTimeline({ entries, isEditMode }: DiaryTimelineProp
                 </div>
               )}
 
-              <div className="mt-4">
+              <div className="mt-4 rounded-2xl p-4 diary-details" style={{ background: "linear-gradient(135deg, rgba(255,245,232,0.85), rgba(255,230,200,0.7))" }}>
                 {isEditMode && editingId === entry.id ? (
-                  <DiaryRichEditor
-                    value={entry.content}
-                    onSave={entry.onUpdateContent}
-                    label="Diary text"
-                  />
+                  <DiaryRichEditor value={entry.content} onSave={entry.onUpdateContent} label="Diary text" />
                 ) : (
-                  <div className="markdown-content markdown-preview">
-                    <ReactMarkdown remarkPlugins={[remarkGfm]}>
-                      {entry.content}
-                    </ReactMarkdown>
+                  <div className="markdown-content markdown-preview line-clamp-2">
+                    <ReactMarkdown remarkPlugins={[remarkGfm]}>{entry.content}</ReactMarkdown>
                   </div>
                 )}
               </div>

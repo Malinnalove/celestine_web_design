@@ -1,22 +1,74 @@
 import EditableText from "@/components/EditableText";
 import { saveHeroEyebrow, saveHeroTitle, saveHomeIntro } from "@/lib/actions";
-import { getPostsByType } from "@/lib/data";
+import { getMoodEntries, getPostsByType } from "@/lib/data";
 import { getSiteContent } from "@/lib/siteContent";
 import { formatImageSrc } from "@/lib/media";
 import { markdownToPlainText } from "@/lib/markdown";
 import { cookies } from "next/headers";
 import Link from "next/link";
+import EmotionHeatmap from "@/components/EmotionHeatmap";
 
 export const dynamic = "force-dynamic";
+
+type MoodSeed = {
+  date: string;
+  mood: "joy" | "anger" | "calm" | "fatigue" | "sadness";
+  intensity: 1 | 2 | 3;
+  note?: string;
+};
+
+function buildDiaryLinks(posts: Awaited<ReturnType<typeof getPostsByType>>): Record<string, { url: string; title: string }> {
+  return posts.reduce((acc, post) => {
+    const date = new Date(post.createdAt);
+    const key = date.toISOString().split("T")[0];
+    acc[key] = { url: `/post/${post.id}`, title: post.title };
+    return acc;
+  }, {} as Record<string, { url: string; title: string }>);
+}
+
+function sampleEmotionSeeds(diaryLinks: Record<string, { url: string; title: string }>): MoodSeed[] {
+  const today = new Date();
+  const seeds: MoodSeed[] = [];
+  const moods: MoodSeed["mood"][] = ["joy", "anger", "calm", "fatigue", "sadness"];
+
+  // Prefill diary dates with calm notes
+  Object.entries(diaryLinks).forEach(([date, info], idx) => {
+    seeds.push({
+      date,
+      mood: moods[idx % moods.length],
+      intensity: 2,
+      note: `日记：${info.title}`,
+    });
+  });
+
+  // Add some random days for visual density
+  for (let i = 0; i < 30; i++) {
+    const d = new Date(today);
+    d.setDate(today.getDate() - i * 4 - (i % 3));
+    const date = d.toISOString().split("T")[0];
+    if (diaryLinks[date]) continue;
+    const mood = moods[(i + 2) % moods.length];
+    seeds.push({
+      date,
+      mood,
+      intensity: ((i % 3) + 1) as 1 | 2 | 3,
+      note: i % 5 === 0 ? "简短情绪记录" : "",
+    });
+  }
+  return seeds;
+}
 
 export default async function HomePage() {
   const cookieStore = cookies();
   const isEditMode = cookieStore.get("edit-mode")?.value === "true";
   const siteContent = await getSiteContent();
 
-  const diaryEntries = (await getPostsByType("diary"))
+  const diaryPosts = await getPostsByType("diary");
+  const diaryEntries = [...diaryPosts]
     .sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime())
     .slice(0, 2);
+  const diaryLinks = buildDiaryLinks(diaryPosts);
+  const moodEntries = await getMoodEntries();
 
   const photoThumbnails = (await getPostsByType("photo"))
     .flatMap((post) =>
@@ -57,6 +109,8 @@ export default async function HomePage() {
           label="Home introduction"
         />
       </section>
+
+      <EmotionHeatmap initialEntries={moodEntries.length ? moodEntries : sampleEmotionSeeds(diaryLinks)} diaryLinks={diaryLinks} />
 
       <section className="space-y-6">
         <div className="flex flex-wrap items-center justify-between gap-4">

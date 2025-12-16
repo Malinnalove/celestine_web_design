@@ -427,3 +427,12 @@ export async function updateGalleryImage(postId: string, index: number, imageUrl
   revalidatePath(`/post/${postId}`);
   return successMessage("Gallery image updated.");
 }
+
+export async function setThemeAction(theme: "classic" | "beast") {
+  cookies().set("theme", theme, {
+    path: "/",
+    maxAge: 60 * 60 * 24 * 30,
+  });
+  revalidatePath("/", "layout");
+  return { success: true, message: `Theme set to ${theme}` } as ActionState;
+}
