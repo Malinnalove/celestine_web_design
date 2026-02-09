@@ -1,7 +1,7 @@
 这是一个简单的个人博客，包括日记、图片和人生轨迹的记录。想做成一个互联网上的家一样。生活不再有交集的老友能从这里了解我的更多。
 # Personal Blog
 
-A fully componentized Next.js 14 App Router project that powers a small personal site with three post types (diary, photo gallery, and long-form articles). Content lives in simple in-memory stores, so everything feels instant without an external database.
+A fully componentized Next.js 14 App Router project that powers a small personal site with three post types (diary, photo gallery, and long-form articles). 
 
 ## Features
 
