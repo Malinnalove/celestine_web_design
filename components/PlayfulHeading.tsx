@@ -25,8 +25,9 @@ export default function PlayfulHeading({ text, className = "" }: PlayfulHeadingP
   const lastHitRef = useRef<Record<number, number>>({});
 
   useEffect(() => {
+    const timers = timersRef.current;
     return () => {
-      Object.values(timersRef.current).flat().forEach((id) => window.clearTimeout(id));
+      Object.values(timers).flat().forEach((id) => window.clearTimeout(id));
     };
   }, []);
 

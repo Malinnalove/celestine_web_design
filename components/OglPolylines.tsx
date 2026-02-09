@@ -31,7 +31,6 @@ export default function OglPolylines({
         : ["#e09f7d", "#ef5d60", "#ec4067", "#a01a7d", "#311847"],
     [variant],
   );
-      const paletteKey = palette.join(",");
 
       useEffect(() => {
         let stop = false;
@@ -206,7 +205,7 @@ export default function OglPolylines({
         if (typeof cleanup === "function") cleanup();
       });
     };
-  }, [variant, paletteKey]);
+  }, [variant, palette]);
 
   const wrapperClasses = fullScreen
     ? `relative h-full w-full pointer-events-none ${className}`
